@@ -48,3 +48,14 @@ Route::prefix('/index')->group(function(){
 Route::prefix('/admin')->group(function(){
 	Route::get('index','AdminController@index');
 });
+
+//商品
+Route::prefix('/goods')->group(function(){
+	Route::get('add','GoodsController@create');
+	Route::post('add_do','GoodsController@store');
+	Route::get('list','GoodsController@index');
+	Route::get('edit/{id}','GoodsController@edit');
+	Route::post('update','GoodsController@update');
+	Route::get('del/{id}','GoodsController@destroy');
+});
+

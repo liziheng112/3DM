@@ -350,8 +350,9 @@
 								<div class="collapsible-body">
 									<div class="order-review">
 										<div class="row">
-											<div class="col s12">
-											@foreach($data as $k=>$v)
+										@foreach($data as $k=>$v)
+											<div class="col s12 che" goodsid="{{$v->goods_id}}">
+											
 												<div class="cart-details">
 													<div class="col s5">
 														<div class="cart-product">
@@ -390,8 +391,8 @@
 														</div>
 													</div>
 												</div>
-											@endforeach
-											</div>
+											
+											</div>@endforeach
 										</div>
 									</div>
 									<div class="order-review final-price">
@@ -435,7 +436,7 @@
 												</div>
 											</div>
 										</div>
-										<a href="/index/pays" class="btn button-default button-fullwidth jiesuan">CONTINUE</a>
+										<a href="javascript:;" id="che" class="btn button-default button-fullwidth jiesuan">CONTINUE</a>
 									</div>
 								</div>
 							</li>
@@ -446,24 +447,37 @@
 		</div>
 	</div>
 	<!-- end checkout -->
-	<meta name="csrf-token" content="{{ csrf_token() }}">
+	<!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
 	<script src="/index/js/jquery.min.js"></script>
 	<script>
-     $('.jiesuan').click(function () {
-          $.ajaxSetup({
-              headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              }
-          });
-          var price=$('#price').text();
-          $.post(
-              '/index/success',
-              {price:price},
-              function (res) {
-                  document.write(res);
-              }
-          )
-     })
+	$('#che').click(function(){
+		var goodsid="";
+		$('.che').each(function(){
+			var _this=$(this);
+			var goods_id=_this.attr('goodsid');
+			goodsid += goods_id+",";
+		})
+		goodsid=goodsid.substr(0,goodsid.length-1);
+		// alert(goodsid);
+		location.href="{{url('index/pays')}}?goodsid="+goodsid;
+	})
+     // $('.jiesuan').click(function () {
+     //      // $.ajaxSetup({
+     //      //     headers: {
+     //      //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     //      //     }
+     //      // });
+     //      var price=$('#price').text();
+     //      var goods_id=$('.cart-details').attr('goodsid');
+     //      // alert(goods_id);
+     //      // $.post(
+     //      //     '/index/success',
+     //      //     {goods_id:goods_id},
+     //      //     function (res) {
+     //      //         document.write(res);
+     //      //     }
+     //      // )
+     // })
     </script>
 
 	@endsection

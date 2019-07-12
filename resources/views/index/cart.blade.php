@@ -357,7 +357,7 @@
 						</div>
 							<td align="right" num="{{$v->goods_num}}" class="num" >
 						        <button class="less">-</button>
-						        <input type="text" class="spinner" value="{{$v->cart_shuliang}}" id="jj" cart_id="{{$v->cart_id}}"/>
+						        <input type="text" class="spinner" value="{{$v->cart_shuliang}}" id="jj" cart_id="{{$v->cart_id}}" />
 						        <button class="add" price="{{$v->goods_selfprice}}">+</button>
    							</td>
 					    </div>
@@ -366,7 +366,7 @@
 							<h5>Price</h5>
 						</div>
 						<div class="col s7">
-							<h5>￥{{$v->goods_selfprice}}</h5>
+							<h5>￥{{$v->newprice}}</h5>
 						</div>
 					</div>
 					<div class="row" id="{{$v->cart_id}}">
@@ -424,9 +424,13 @@
         $(document).on('click','.add',function(){
             // js改变购买数量
             var _this = $(this);
+            // alert(_this);
             var cart_id=_this.prev().attr('cart_id');
+            // alert(cart_id);
             var goods_num=parseInt(_this.prev().val())+1;
+            // console.log(goods_num);
             var price=_this.attr('price');
+            // alert(price);
             var shuliang = parseInt(_this.prev('input').val());
             // 库存
             var num = _this.parents("tr").attr('goods_num');
@@ -449,14 +453,17 @@
             var goods_num=parseInt(_this.next().val())-1;
             var shuliang = parseInt(_this.next('input').val());
             var price=_this.next().next().attr('price');
+            // alert(price);return false;
             if (shuliang <= 1) {
                 _this.prop('disabled',true);
             }else{
+            	// console.log(shuliang);
                 shuliang-=1;
-                _this.next('input').val(shuliang);
+                _this.next('.spinner').val(shuliang);
                 _this.parents().children("input").last().prop('disabled',false);
 
             }
+            // return false;
             changeBuyNumber(cart_id,goods_num);//修改数量的
             getSubTotal(goods_num,price,_this);//小计的
             boxChecked(_this);//给当前复选框选中
@@ -471,7 +478,7 @@
             var price=_this.next().attr('price');
             // 库存
             var num = _this.parents("td[class=num]").attr('num');
-            console.log(num);
+            // console.log(num);
             // 验证
             var reg = /^\d{1,}$/;
             if (shuliang ==''|| shuliang<=1|| ! reg.test(shuliang)) {

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Index;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use DB;
 class AliPayController extends Controller
 {
     public $app_id;
@@ -20,7 +20,7 @@ class AliPayController extends Controller
         $this->app_id = '2016092800618146';
         $this->gate_way = 'https://openapi.alipaydev.com/gateway.do';
         $this->notify_url = env('APP_URL').'/notify_url';
-        $this->return_url = 'http://www.lxblog.com/index/cart';
+        $this->return_url = 'http://www.herolixiang.top/';
     }
     
     
@@ -28,10 +28,9 @@ class AliPayController extends Controller
      * 订单支付
      * @param $oid
      */
-    public function pay()
+    public function pay(Request $request)
     {
-        
-        echo "111111";
+        // echo "111111";
     	// file_put_contents(storage_path('logs/alipay.log'),"\nqqqq\n",FILE_APPEND);
     	// die();
         //验证订单状态 是否已支付 是否是有效订单
@@ -44,6 +43,10 @@ class AliPayController extends Controller
         // if($order_info['is_delete']==1){
         //     die("订单已被删除，无法支付");
         // }
+        // $goodsid=request()->get('goodsid');
+        // // dd($goodsid);
+        // $data=DB::table('goods')->finds();
+
         $oid = time().mt_rand(1000,1111);  //订单编号
         //业务参数
         $bizcont = [
@@ -172,17 +175,17 @@ class AliPayController extends Controller
         $data = json_encode($_POST);
         $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
         //记录日志
-        file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        file_put_contents(storage_path('logs/alipay.log'),$log_str,FILE_APPEND);
         //验签
         $res = $this->verify($_POST);
         $log_str = '>>>> ' . date('Y-m-d H:i:s');
         if($res === false){
             //记录日志 验签失败
             $log_str .= " Sign Failed!<<<<< \n\n";
-            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+            file_put_contents(storage_path('logs/alipay.log'),$log_str,FILE_APPEND);
         }else{
             $log_str .= " Sign OK!<<<<< \n\n";
-            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+            file_put_contents(storage_path('logs/alipay.log'),$log_str,FILE_APPEND);
         }
         //验证订单交易状态
         if($_POST['trade_status']=='TRADE_SUCCESS'){

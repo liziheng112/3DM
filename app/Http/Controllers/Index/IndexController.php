@@ -144,6 +144,7 @@ class IndexController extends Controller
     //支付页面
     public function checkout()
     {
+        
         $session=request()->session()->get('name');
         if ($session==null) {
             return redirect('/login/login')->with('status', '请登录');
@@ -155,6 +156,7 @@ class IndexController extends Controller
             ->join('goods','cart.goods_id','=','goods.goods_id')
             ->get();
         $price=0;
+        // dd($data);
         foreach ($data as $k => $v){
             $data[$k]->goods_big_pic = ltrim($v->goods_big_pic, '|');
             $data[$k]->zongjia=$data[$k]->goods_selfprice*$data[$k]->cart_shuliang;
